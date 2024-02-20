@@ -1,0 +1,27 @@
+html, body,
+footer, header, nav, section {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    color: rgb(0,0,0); 
+    overflow-x: hidden;
+}
+
+a {
+    color:rgb(0,0,0);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration:none;
+}
+
