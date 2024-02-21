@@ -1,19 +1,31 @@
-import { SET_USER } from "./Type";
+
+import { REMOVE_USER, SET_USER } from "./Type";
 
 const initialState = {
-    email: '',
-    authenticate: false
+    email:'',
+    authenticated:false,
+    
 };
 
-export const UserReducer = (state = initialState, action) => {
+const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_USER:
             return {
-                ...state, ...action.payload
+                ...state,
+                email: action.payload.email,
+                authenticated: true,
             }
-        default:
+        case REMOVE_USER:
             return {
-                state
-            }
+                ...state,
+                email: '',
+                authenticated: false,
+            };
+        default:
+            return state;
     }
 }
+
+export default userReducer;
+
+

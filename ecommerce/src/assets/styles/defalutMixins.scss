@@ -1,0 +1,30 @@
+@mixin displayflex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin alignCenter {
+    display: flex;
+    align-items: center;
+}
+
+@mixin justifyCenter {
+    display: flex;
+    justify-content: center;
+}
+
+@mixin btnBasic {
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+@mixin primaryBlueBgColor {
+    background-color: #4889F4
+}
+
+@mixin max-ht-wt {
+    height: 100%;
+    width: 100%;
+}

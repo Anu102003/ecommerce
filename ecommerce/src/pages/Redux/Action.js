@@ -1,6 +1,10 @@
-import { SET_USER } from "./Type"
+import { REMOVE_USER, SET_USER } from "./Type"
 
-export const setUser=(user)=>({
-    type:SET_USER,
-    payload:user,
-})
+export const login = (email) => ({
+  type: SET_USER,
+  payload: {email},
+});
+
+export const logout = () => ({
+  type: REMOVE_USER,
+});
