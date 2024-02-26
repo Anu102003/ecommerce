@@ -4,6 +4,12 @@
     justify-content: center;
 }
 
+@mixin justifySpace-BwtAlignCenter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 @mixin alignCenter {
     display: flex;
     align-items: center;
@@ -20,6 +26,11 @@
     cursor: pointer;
 }
 
+@mixin inputBasic {
+    outline: none;
+    border: none;
+}
+
 @mixin primaryBlueBgColor {
     background-color: #4889F4
 }
@@ -27,4 +38,24 @@
 @mixin max-ht-wt {
     height: 100%;
     width: 100%;
+}
+
+@mixin fontS16B700 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+@mixin fontS15B500 {
+    font-weight: 500;
+    font-size: 15px;
+}
+
+@mixin fontS14B700 {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+@mixin fontS24B700{
+    font-size: 24px;
+    font-weight: 700;
 }

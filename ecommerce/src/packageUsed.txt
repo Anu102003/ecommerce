@@ -8,3 +8,6 @@
 4 redux
 5 react-redux
 6 redux-persist
+7 fontawesome solid and regular
+npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-regular-svg-icons @fortawesome/react-fontawesome
+npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome

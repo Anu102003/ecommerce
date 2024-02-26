@@ -3,7 +3,7 @@ import { auth, provider } from '../../Config/ConfigFirebase'
 import { useNavigate } from 'react-router-dom'
 import { signInWithPopup } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { login, logout } from '../Redux/Action';
+import { login, logout } from '../../Redux/Action';
 import "./_signIn.scss"
 import { basic } from '../../images';
 export const SignIn = () => {
