@@ -1,43 +1,94 @@
 import React, { useEffect, useState } from 'react'
 import "./_products.scss"
-import { db } from "../../../Config/ConfigFirebase"
-import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
+import i18n from '../../../i18n'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faClose, faMagnifyingGlass, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
-import { MenAddProduct } from '../../../assets/components/Popup/MenAddProduct/MenAddProduct'
+import { AddProduct } from '../../../assets/components/Popup/AddProduct/AddProduct'
+import { ListProducts } from '../../../assets/components/ListProducts/ListProducts';
+import { useTranslation } from 'react-i18next'
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { db } from '../../../Config/ConfigFirebase'
+
 export const Products = () => {
+  const { t } = useTranslation();
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const [categorySelect, setCategorySelect] = useState("Men");
+  const [categorySelect, setCategorySelect] = useState("");
+  const [addEnable, setAddEnable] = useState(false);
+  const [productData, setProductData] = useState([])
+  const [editEnable, setEditEnable] = useState(false);
+  const [editId, setEditId] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const searchQuery = (e) => {
+    setSearchTerm(e.target.value);
+  }
   const handleCategory = (category) => {
     setCategoryOpen(false)
     setCategorySelect(category)
   }
-  const [addEnable, setAddEnable] = useState(false);
-  useState(() => {
+
+  useEffect(() => {
     function handle(e) {
       if (e.target.className === "product-popup-parent") {
         setAddEnable(false)
+        setEditEnable(false)
       }
     }
     window.addEventListener("click", handle)
     return () => window.removeEventListener("click", handle)
   }, [])
-  const [messages, setMessages] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const messagesCollection = collection(db, 'men');
-      const messagesSnapshot = await getDocs(messagesCollection);
-      const messagesData = messagesSnapshot.docs.map(doc => doc.data());
-      setMessages(messagesData);
-    };
 
-    fetchData();
-  }, []);
+  const [details, setDetails] = useState();
+  useEffect(() => {
+    if (categorySelect.length > 0) {
+      const fetchData = async () => {
+        try {
+          const messagesCollection = collection(db, `${categorySelect.toLowerCase()}`);
+          const q = query(messagesCollection, orderBy('productId', 'asc'));
+          const messagesSnapshot = await getDocs(q);
+          const messagesData = messagesSnapshot.docs.map(doc => (
+            {
+              id: doc.id,
+              ...doc.data()
+            }
+          ));
+          setDetails(messagesData);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchData();
+    }
+  }, [categorySelect]);
+
+  const filteredProducts = details?.filter(product => {
+    const searchableCategory = product.category?.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
+    const searchableColour = product.colour?.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
+    const searchablePrice = product.price?.normalPrice?.toString().toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
+    const searchTermFormatted = searchTerm.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
+    return searchableColour?.includes(searchTermFormatted) || searchableCategory?.includes(searchTermFormatted) || searchablePrice?.includes(searchTermFormatted);
+  });
+
+
+
+
+  const renderCategory = () => {
+    switch (categorySelect) {
+      case "":
+        return <div className='select-category'>
+          <p className='p1'>Select any category
+          </p>
+        </div>
+      default:
+        return <ListProducts category={categorySelect} details={filteredProducts} setEditId={setEditId} setEditEnable={setEditEnable} setProductData={setProductData} />
+    }
+  }
+
   return (
     <div className='products-container'>
       <div className='category-search-container'>
         <div className='search'>
-          <input type='text' placeholder='Search' />
+          <input type='text' placeholder='Search Category, Colour, Price' onChange={searchQuery} value={searchTerm} />
           <div className='search-icon'>
             <FontAwesomeIcon icon={faMagnifyingGlass} color="gray" />
           </div>
@@ -46,18 +97,18 @@ export const Products = () => {
           {
             categorySelect.length > 0 &&
             <div className='add-btn' onClick={() => { setAddEnable(true) }}>
-              Add Products<FontAwesomeIcon icon={faPlusCircle} />
+              {i18n.t('PRODUCTS.ADD_PRODUCTS')} <FontAwesomeIcon icon={faPlusCircle} />
             </div>
           }
-          <div className='category' onClick={() => { setCategoryOpen(!categoryOpen) }}>
-            Select Category
+          <div className='product-category' onClick={() => { setCategoryOpen(!categoryOpen) }}>
+            {i18n.t('PRODUCTS.SELECT_ANY_CATEGORY')}
             <FontAwesomeIcon icon={faAngleDown} />
           </div>
         </div>
       </div>
       {
         categoryOpen &&
-        <div className='category-options'>
+        <div className='product-category-options'>
           <p className='options' onClick={() => { handleCategory("Men") }}>Men</p>
           <p className='options' onClick={() => { handleCategory("Women") }}>Women</p>
           <p className='options' onClick={() => { handleCategory("Electronics") }}>Electronics</p>
@@ -65,36 +116,16 @@ export const Products = () => {
         </div>
       }
       {
-        categorySelect === "Men" && <div>
-          {
-            messages?.map((product, index) =>
-            (
-              <p>{product.email}</p>
-            )
-            )
-          }
-        </div>
+        renderCategory()
       }
       {
-        categorySelect === "Women" && <div>u</div>
-      }
-      {
-        categorySelect === "Electronics" && <div>e</div>
-      }
-      {
-        categorySelect === "Mobile" && <div>m</div>
-      }
-      {
-        addEnable &&
+        (editEnable || addEnable) &&
         <div className='product-popup-parent'>
           <div className='product-popup'>
-            <div className='close-icon' onClick={() => { setAddEnable(false) }}>
+            <div className='close-icon' onClick={() => { setAddEnable(false); setEditEnable(false); setProductData([]); setEditId('') }}>
               <FontAwesomeIcon icon={faClose} size='2xl' />
             </div>
-            {
-              categorySelect === "Men" &&
-              <MenAddProduct />
-            }
+            <AddProduct category={categorySelect} editId={editId} editEnable={editEnable} setAddEnable={setAddEnable} productData={productData} setProductData={setProductData} setEditEnable={setEditEnable} />
           </div>
         </div>
       }

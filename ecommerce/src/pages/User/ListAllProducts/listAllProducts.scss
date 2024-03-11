@@ -1,0 +1,20 @@
+.men-container {
+    display: flex;
+    overflow: hidden;
+    margin-top: 6rem;
+
+    .sidefilter-wrapper {
+        width: 15%;
+        height: 100%;
+        border-right: 1px solid #e5e5e5;
+    }
+
+    .products-wrapper {
+        width: 85%;
+        margin: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        height: fit-content;
+        row-gap: 5rem;
+    }
+}

@@ -5,16 +5,22 @@ $search-bg: rgba(239, 238, 238, 0.8901960784);
 $search-border: 1px solid rgb(235, 234, 234);
 $search-hover-bg: rgba(255, 255, 255, 0.9568627451);
 $search-hover-box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-$navbar-border: 2px solid #e5e5e5;
+$navbar-border: 1px solid #e5e5e5;
 $logout-btn-hover: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+$search-txt-colour: rgb(62, 61, 61);
 
 .navbar {
     padding: 20px;
     display: grid;
     grid-template-columns: 0.1fr 2fr 0.1fr;
     align-items: center;
-    @include max-ht-wt;
+    width: 100%;
     border-bottom: $navbar-border ;
+    background-color: rgb(243, 243, 247);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 4;
 
     &__logo {
         cursor: pointer;
@@ -88,7 +94,7 @@ $logout-btn-hover: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 
                 border-radius: 5px;
                 border: $search-border;
                 padding: 4px 5px 4px 2.3rem;
-                color: gray;
+                color: $search-txt-colour;
                 background: $search-bg;
                 @include fontS15B500;
             }
@@ -99,6 +105,28 @@ $logout-btn-hover: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 
             }
         } 
 
+        .select-language {
+            border: 1px solid black;
+            border-radius: 10px;
+            height: 36px;
+            margin: 10px 10px 10px 0;
+            
+            &__select {
+                padding: 0.5rem 0.8rem 0.5rem 0.5rem;
+                background-color: transparent;
+                @include inputBasic;
+                @include fontS12B700;
+            }
+            &__option{
+                background: white; 
+                color: black;   
+                &:checked{
+                    background: purple;
+                    color: white;
+                }
+            }
+
+        }
     }
 
     &__logout-btn {

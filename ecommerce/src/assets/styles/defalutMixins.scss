@@ -9,6 +9,11 @@
     align-items: center;
     justify-content: space-between;
 }
+@mixin justifySpace-EvenlyAlignCenter {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
 
 @mixin alignCenter {
     display: flex;
@@ -40,6 +45,26 @@
     width: 100%;
 }
 
+@mixin fontS10B700 {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+@mixin fontS12B400 {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+@mixin fontS12B700 {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+@mixin fontS16B400 {
+    font-size: 16px;
+    font-weight: 400;
+}
+
 @mixin fontS16B700 {
     font-size: 16px;
     font-weight: 700;
@@ -54,8 +79,43 @@
     font-weight: 700;
     font-size: 14px;
 }
-
-@mixin fontS24B700{
+@mixin fontS20B600 {
+    font-size: 20px;
+    font-weight: 600;
+}
+@mixin fontS24B700 {
     font-size: 24px;
     font-weight: 700;
+}
+
+@mixin add-icon {
+    background-color: #3267EE;
+    color: white;
+    @include fontS14B700;
+    padding: 6px 0.8rem;
+    border-radius: 5px;
+    @include displayflex;
+    gap: 0.5rem;
+    cursor: pointer;
+    width: max-content;
+
+    &:hover {
+        background-color: #1b54e5;
+    }
+}
+
+@mixin submit-icon($color,$hover-color) {
+    background-color:$color;
+    color: white;
+    @include fontS14B700;
+    padding: 6px 0.8rem;
+    border-radius: 5px;
+    @include displayflex;
+    gap: 0.5rem;
+    cursor: pointer;
+    width: max-content;
+
+    &:hover {
+        background-color:$hover-color ;
+    }
 }

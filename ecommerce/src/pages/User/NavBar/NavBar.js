@@ -7,22 +7,23 @@ import "./_navBar.scss"
 import { NavbarIcons } from '../../../assets/components/NavbarIcons/NavbarIcons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faMagnifyingGlass, faRightFromBracket, } from '@fortawesome/free-solid-svg-icons';
+import i18n from '../../../i18n';
 
-export const NavBar = ({ navPopup, setNavPopup }) => {
-    const Home="Home"
-    const Men="Men"
-    const Women="Women"
-    const Electronics="Electronics"
-    const Mobile="Mobile"
+export const NavBar = ({ navPopup, setNavPopup ,navMenuSelected,setNavMenuSelected}) => {
+    const Home = "Home"
+    const Men = "Men"
+    const Women = "Women"
+    const Electronics = "Electronics"
+    const Mobile = "Mobile"
 
     const navigate = useNavigate();
-    const location = useLocation(); 
+    const location = useLocation();
 
     const { email } = useSelector(state => state.user);
     // console.log(email)
     const dispatch = useDispatch();
 
-    
+
     const handleLogout = () => {
         dispatch(logout());
         navigate("/signin")
@@ -30,24 +31,26 @@ export const NavBar = ({ navPopup, setNavPopup }) => {
 
 
     const pathname = location.pathname;
-    const [navMenuSelected, setNavMenuSelected] = useState()
-    
-      const handleRedirect = menu => {
-        navigate(`/${menu.toLowerCase()}`); 
-      };
 
-      useEffect(()=>{
+
+    const handleRedirect = (menu) => {
+        navigate(`/${menu.toLowerCase()}`);
+        setNavMenuSelected(menu)
+      };
+    useEffect(() => {
         if (pathname === '/') setNavMenuSelected(Home)
         if (pathname === '/home') setNavMenuSelected(Home)
         if (pathname === '/men') setNavMenuSelected(Men)
         if (pathname === '/women') setNavMenuSelected(Women)
         if (pathname === '/electronics') setNavMenuSelected(Electronics)
         if (pathname === '/mobile') setNavMenuSelected(Mobile)
-      },[pathname])
+    }, [pathname])
+
+   
     return (
         <div className='navbar'>
 
-            <div className='navbar__logo' onClick={() => { handleRedirect(Home)}}>
+            <div className='navbar__logo' onClick={() => { handleRedirect(Home) }}>
                 <img src={basic.logo} />
             </div>
 
@@ -87,9 +90,12 @@ export const NavBar = ({ navPopup, setNavPopup }) => {
                         </div>
                     </div>
                     <NavbarIcons />
+
                 </div>
 
+
             </div>
+
 
 
 

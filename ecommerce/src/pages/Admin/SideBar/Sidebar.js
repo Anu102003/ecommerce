@@ -6,6 +6,7 @@ import { basic } from '../../../images';
 import "./_sidebar.scss"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faMagnifyingGlass, faRightFromBracket, } from '@fortawesome/free-solid-svg-icons';
+import i18n from '../../../i18n';
 
 export const Sidebar = ({ sidePopup, setSidePopup }) => {
     const Dashboard = "Dashboard"
@@ -42,6 +43,21 @@ export const Sidebar = ({ sidePopup, setSidePopup }) => {
         if (pathname === '/customer') setSideMenuSelected(Customer)
         if (pathname === '/payments') setSideMenuSelected(Payments)
     }, [pathname])
+
+
+    const [locale, setLocale] = useState(i18n.language);
+
+    const handleChange = (event) => {
+        i18n.changeLanguage(event.target.value);
+    };
+
+    useEffect(() => {
+        const handleLanguageChange = (lng) => setLocale(lng);
+        i18n.on('languageChanged', handleLanguageChange);
+        return () => {
+            i18n.off('languageChanged', handleLanguageChange);
+        };
+    }, []);
     return (
         <>
             <div className='sidebar'>
@@ -50,15 +66,15 @@ export const Sidebar = ({ sidePopup, setSidePopup }) => {
                     <img src={basic.logoWhite} />
                 </div>
                 <div className='sidebar__menu'>
-                    <div className={`content ${sideMenuSelected===Dashboard && "active"}`} onClick={() => { handleRedirect(Dashboard) }}>Dashboard
+                    <div className={`content ${sideMenuSelected === Dashboard && "active"}`} onClick={() => { handleRedirect(Dashboard) }}>Dashboard
                     </div>
-                    <div className={`content ${sideMenuSelected===Products && "active"}`} onClick={() => { handleRedirect(Products) }}>Products
+                    <div className={`content ${sideMenuSelected === Products && "active"}`} onClick={() => { handleRedirect(Products) }}>Products
                     </div>
-                    <div className={`content ${sideMenuSelected===Orders && "active"}`} onClick={() => { handleRedirect(Orders) }}>Orders
+                    <div className={`content ${sideMenuSelected === Orders && "active"}`} onClick={() => { handleRedirect(Orders) }}>Orders
                     </div>
-                    <div className={`content ${sideMenuSelected===Customer && "active"}`} onClick={() => { handleRedirect(Customer) }}>Customer
+                    <div className={`content ${sideMenuSelected === Customer && "active"}`} onClick={() => { handleRedirect(Customer) }}>Customer
                     </div>
-                    <div className={`content ${sideMenuSelected===Payments && "active"}`} onClick={() => { handleRedirect(Payments) }}>Payments
+                    <div className={`content ${sideMenuSelected === Payments && "active"}`} onClick={() => { handleRedirect(Payments) }}>Payments
                     </div>
                 </div>
             </div>
@@ -74,12 +90,13 @@ export const Sidebar = ({ sidePopup, setSidePopup }) => {
                         </div>
                     </div>
 
-                    <div className='more-icon-wrapper' onClick={() => { setSidePopup(!sidePopup) }}>
-                        <FontAwesomeIcon className='more-icon' size='xl' icon={faBars} />
-                    </div>
-
                     <div className='profile-logout-wrapper'>
-
+                        <div className='select-language'>
+                            <select className="select-language__select" value={locale} onChange={handleChange}>
+                                <option className="select-language__option" value="en">English</option>
+                                <option className="select-language__option" value="zh">Chinese</option>
+                            </select>
+                        </div>
                         <div className='profile-img'>
                             <img src={email.profileImg} />
                         </div>
@@ -91,6 +108,10 @@ export const Sidebar = ({ sidePopup, setSidePopup }) => {
                             <button>Logout</button>
                         </div>
 
+                    </div>
+
+                    <div className='more-icon-wrapper' onClick={() => { setSidePopup(!sidePopup) }}>
+                        <FontAwesomeIcon className='more-icon' size='xl' icon={faBars} />
                     </div>
                 </div>
             </div>
